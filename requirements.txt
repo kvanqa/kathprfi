@@ -9,3 +9,4 @@ xarray
 matplotlib
 tqdm
 scipy
+statsmodels
