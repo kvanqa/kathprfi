@@ -99,15 +99,9 @@ app.layout = html.Div([
     html.Div([
         html.H3("Summary"),
         html.P("""
-            This dashboard provides an overview of Radio Frequency Interference (RFI) monitoring 
-            using MeerKAT data. The visualizations show the intensity of RFI over time and frequency, 
-            as well as the mean RFI levels for better analysis. Looking at the summarized version of the 
-            January 2025 RFI occupancy. An unusual trend in RFI over frequency compared to previous months is observed.
-             While the fractional RFI as a function of time remains consistent with past observations, 
-             we see significantly higher RFI levels across a broad range of frequency intervals. 
-             Notably, some of these affected frequencies were previously considered RFI-free for MeerKAT.
-            This unexpected increase in RFI as a function of frequency could be attributed to several factors, 
-            including new interference sources, changes in telescope hardware, or external environmental factors. 
+            Welcome to the RFI monitoring dashboard! This tool monitors Radio Frequency Interference (RFI) activities on the MeerKAT site, 
+		providing up-to-date statistics on RFI trends over the months. Using the KATHPRFI pipelines as its foundation, 
+		the dashboard offers insights into RFI patterns to help us monitor and manage interference more effectively
 
         """)]),
     dcc.Graph(id='time-plot'),
