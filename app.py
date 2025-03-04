@@ -107,7 +107,7 @@ app.layout = html.Div([
 
     html.H3("Monthly Reports"),
     html.Ul([
-        html.Li(html.A("August 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-August-2024.pdf", target="_blank")),
+        html.Li(html.A("August 2024 Report", href="RFI-Report-August-2024.pdf", target="_blank")),
         html.Li(html.A("September 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-September-2024.pdf", target="_blank")),
         html.Li(html.A("October 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-October-2024.pdf", target="_blank")),
         html.Li(html.A("November 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-November-2024.pdf", target="_blank")),
@@ -117,12 +117,13 @@ app.layout = html.Div([
     ]),
     html.H3("Monthly Fractional RFI Flagging Datasets"),
     html.Ul([
-        html.Li(html.A("August 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_August_2024.csv", target="_blank")),
-        html.Li(html.A("September 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_September_2024.csv", target="_blank")),
-        html.Li(html.A("October 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_October_2024.csv", target="_blank")),
-        html.Li(html.A("November 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_November_2024.csv", target="_blank")),
-        html.Li(html.A("December 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_December_2024.csv", target="_blank")),
-        html.Li(html.A("January 2025 Dataset", href="/assets/RFI_Datasets/fractional_RFI_January_2025.csv", target="_blank")),
+	html.Li(html.A("December 2022 Dataset", href="fractional_RFI_December_2022.csv", target="_blank")),
+        html.Li(html.A("August 2024 Dataset", href="fractional_RFI_August_2024.csv", target="_blank")),
+        html.Li(html.A("September 2024 Dataset", href="fractional_RFI_September_2024.csv", target="_blank")),
+        html.Li(html.A("October 2024 Dataset", href="fractional_RFI_October_2024.csv", target="_blank")),
+        html.Li(html.A("November 2024 Dataset", href="fractional_RFI_November_2024.csv", target="_blank")),
+        html.Li(html.A("December 2024 Dataset", href="fractional_RFI_December_2024.csv", target="_blank")),
+        html.Li(html.A("January 2025 Dataset", href="fractional_RFI_January_2025.csv", target="_blank")),
     ]),
     html.H3("Key RFI Statistics"),
     dash_table.DataTable(
