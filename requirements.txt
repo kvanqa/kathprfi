@@ -220,7 +220,6 @@ qrcode==8.0
 qtconsole @ file:///croot/qtconsole_1674008428467/work
 QtPy @ file:///opt/conda/conda-bld/qtpy_1662014892439/work
 # Editable install with no version control (radiopadre-client==1.2.0)
--e /scratch/kvanqa/miniconda3/lib/python3.10/site-packages
 rdbtools==0.1.15
 rdflib==6.3.2
 redis==4.5.4
