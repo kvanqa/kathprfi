@@ -5,7 +5,6 @@ altair==5.2.0
 ansi2html==1.9.2
 anyio==4.8.0
 arabic-reshaper==3.0.0
-argon2-cffi @ file:///opt/conda/conda-bld/argon2-cffi_1645000214183/work
 argon2-cffi-bindings @ file:///tmp/build/80754af9/argon2-cffi-bindings_1644553347904/work
 asciitree==0.3.3
 asn1crypto==1.5.1
@@ -15,13 +14,10 @@ astro-tigger==1.6.1.1
 astro-tigger-lsm==1.7.1
 astropy==5.3
 astroquery==0.4.6
-asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
 async-timeout==4.0.2
 attrs @ file:///croot/attrs_1668696182826/work
 Babel @ file:///croot/babel_1671781930836/work
 backcall @ file:///home/ktietz/src/ci/backcall_1611930011877/work
-beautifulsoup4 @ file:///opt/conda/conda-bld/beautifulsoup4_1650462163268/work
-bleach @ file:///opt/conda/conda-bld/bleach_1641577558959/work
 blinker==1.6.2
 bokeh==3.2.0
 boltons @ file:///croot/boltons_1677628692245/work
@@ -52,7 +48,6 @@ dash-html-components==2.0.0
 dash-table==5.0.0
 dask==2023.12.1
 debugpy @ file:///home/builder/ci_310/debugpy_1640789504635/work
-decorator @ file:///opt/conda/conda-bld/decorator_1643638310831/work
 defusedxml @ file:///tmp/build/80754af9/defusedxml_1615228127516/work
 dill==0.3.6
 distributed==2023.12.1
@@ -64,9 +59,7 @@ entrypoints @ file:///tmp/build/80754af9/entrypoints_1649908313000/work
 ephem==4.1.4
 etelemetry==0.3.1
 exceptiongroup==1.2.2
-executing @ file:///opt/conda/conda-bld/executing_1646925071911/work
 fasteners==0.19
-fastjsonschema @ file:///opt/conda/conda-bld/python-fastjsonschema_1661371079312/work
 filelock==3.17.0
 fitz==0.0.1.dev2
 Flask==2.3.3
@@ -126,11 +119,8 @@ lesscpy==0.15.1
 llvmlite==0.39.1
 locket==1.0.0
 looseversion==1.3.0
-lxml @ file:///opt/conda/conda-bld/lxml_1657545139709/work
 markdown-it-py==3.0.0
-MarkupSafe @ file:///opt/conda/conda-bld/markupsafe_1654597864307/work
 matplotlib==3.7.1
-matplotlib-inline @ file:///opt/conda/conda-bld/matplotlib-inline_1662014470464/work
 mdurl==0.1.2
 mistune @ file:///home/builder/ci_310/mistune_1640791641754/work
 mock==5.0.2
@@ -157,15 +147,12 @@ oauthlib==3.2.2
 oscrypto==1.3.0
 packaging @ file:///croot/packaging_1678965309396/work
 pandas==1.5.3
-pandocfilters @ file:///opt/conda/conda-bld/pandocfilters_1643405455980/work
-parso @ file:///opt/conda/conda-bld/parso_1641458642106/work
 partd==1.3.0
 pathlib==1.0.1
 patsy==0.5.6
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
 Pillow==9.4.0
-platformdirs @ file:///opt/conda/conda-bld/platformdirs_1662711380096/work
 plotly==6.0.0
 pluggy @ file:///tmp/build/80754af9/pluggy_1648024709248/work
 ply==3.11
@@ -173,9 +160,7 @@ prometheus-client @ file:///tmp/abs_d3zeliano1/croots/recipe/prometheus_client_1
 prompt-toolkit @ file:///croot/prompt-toolkit_1672387306916/work
 protobuf==4.25.1
 prov==2.0.1
-psutil @ file:///opt/conda/conda-bld/psutil_1656431268089/work
 ptyprocess @ file:///tmp/build/80754af9/ptyprocess_1609355006118/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
-pure-eval @ file:///opt/conda/conda-bld/pure_eval_1646925070566/work
 puremagic==1.28
 pyarrow==14.0.1
 pyasn1==0.5.0
@@ -193,7 +178,6 @@ pyhanko-certvalidator==0.26.5
 PyJWT==2.6.0
 PyMsgBox==1.0.9
 pyngrok==7.2.3
-pyOpenSSL @ file:///opt/conda/conda-bld/pyopenssl_1643788558760/work
 pyparsing==3.0.9
 pypdf==5.3.0
 pyperclip==1.8.2
@@ -215,11 +199,10 @@ pyvo==1.4.1
 pywhatkit==5.4
 pyxnat==1.6.3
 PyYAML==6.0
-pyzmq @ file:///opt/conda/conda-bld/pyzmq_1657724186960/work
 qrcode==8.0
 qtconsole @ file:///croot/qtconsole_1674008428467/work
-QtPy @ file:///opt/conda/conda-bld/qtpy_1662014892439/work
 # Editable install with no version control (radiopadre-client==1.2.0)
+-e /scratch/kvanqa/miniconda3/lib/python3.10/site-packages
 rdbtools==0.1.15
 rdflib==6.3.2
 redis==4.5.4
@@ -246,7 +229,6 @@ smmap==5.0.1
 sniffio==1.3.1
 sortedcontainers==2.4.0
 soupsieve @ file:///croot/soupsieve_1666296392845/work
-stack-data @ file:///opt/conda/conda-bld/stack_data_1646927590127/work
 starlette==0.45.3
 statsmodels==0.14.2
 streamlit==1.29.0
@@ -259,10 +241,7 @@ threadpoolctl==3.1.0
 tifffile==2023.9.26
 tinycss2 @ file:///croot/tinycss2_1668168815555/work
 toml @ file:///tmp/build/80754af9/toml_1616166611790/work
-tomli @ file:///opt/conda/conda-bld/tomli_1657175507142/work
 toolz @ file:///croot/toolz_1667464077321/work
-tornado @ file:///opt/conda/conda-bld/tornado_1662061693373/work
-tqdm @ file:///opt/conda/conda-bld/tqdm_1664392687731/work
 traitlets @ file:///croot/traitlets_1671143879854/work
 traits==7.0.2
 typing_extensions==4.12.2
@@ -272,7 +251,6 @@ urllib3 @ file:///croot/urllib3_1673575502006/work
 uvicorn==0.34.0
 validators==0.22.0
 watchdog==3.0.0
-wcwidth @ file:///Users/ktietz/demo/mc3/conda-bld/wcwidth_1629357192024/work
 webencodings==0.5.1
 websocket-client @ file:///home/builder/ci_310/websocket-client_1640795866898/work
 Werkzeug==2.3.7
@@ -284,4 +262,3 @@ xyzservices==2023.2.0
 zarr==2.16.1
 zict==3.0.0
 zipp==3.15.0
-zstandard @ file:///opt/conda/conda-bld/zstandard_1663827383994/work
