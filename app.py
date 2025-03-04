@@ -293,6 +293,9 @@ def update_plots(clickData):
 
     return time_fig, box_fig, bar_fig, ecdf_fig, freq_fig, time_freq_fig
 
+# define seerver as needed by gunicorn
+server = app.server
+
 # Run the app
 #import webbrowser
 #if __name__ == '__main__':
