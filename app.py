@@ -294,10 +294,10 @@ def update_plots(clickData):
     return time_fig, box_fig, bar_fig, ecdf_fig, freq_fig, time_freq_fig
 
 # Run the app
-import webbrowser
-if __name__ == '__main__':
-    webbrowser.open("http://0.0.0.0:8080")
-    app.run(host='0.0.0.0', port=8080, debug=True)
+#import webbrowser
+#if __name__ == '__main__':
+#    webbrowser.open("http://0.0.0.0:8080")
+#    app.run(host='0.0.0.0', port=8080, debug=True)
 
 # if __name__ == '__main__': 
 #     app.run_server(jupyter_mode="external", debug=True)
