@@ -3,7 +3,7 @@ flask
 gunicorn
 pandas
 plotly
-dask
+dask[distributed]
 zarr
 xarray
 matplotlib
