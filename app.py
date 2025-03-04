@@ -49,7 +49,7 @@ ecdf_data = {name: ECDF(data.flatten()) for name, data in loaded_datasets.items(
 
 # now we will just read it with pickle as we have dumped it in the sy
 DSF = []
-for ii in range(file_paths)+1):
+for ii in range(len(file_paths)+1):
     with open(f'U_hhh_FPX_{ii}.pkl', 'rb') as file:
         datasetsF=  pd.read_pickle(file)
         DSF.append(datasetsF)
