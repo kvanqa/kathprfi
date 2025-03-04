@@ -31,6 +31,18 @@ file_paths = {
     "January 2025": "fractional_RFI_January_2025.csv"
 }
 
+# Shaded frequency bands (example values, adjust to match your figure)
+shaded_regions = [
+    (560, 580, 'DTV1'),
+    (700, 720, 'DTV2'),
+    (750, 780, 'Vodacom downlink'),
+    (800, 830, 'MTN downlink'),
+    (850, 875, 'Telkom downlink'),
+    (880, 915, 'GSM UP'),
+    (925, 960, 'GSM DOWN'),
+    (967, 1164, 'Aircraft transponders')
+]
+
 # Load datasets into a dictionary
 loaded_datasets = {
     name: pd.read_csv(path).iloc[:, 1:].values  # Exclude the first column using iloc
