@@ -21,13 +21,13 @@ summary_df = pd.read_csv("RFI_summary_statistics.csv")
 
 # Define file paths
 file_paths = {
-    "December 2022": "assets/RFI_Datasets/fractional_RFI_December_2022.csv",
-    "August 2024": "assets/RFI_Datasets/fractional_RFI_August_2024.csv",
-    "September 2024": "assets/RFI_Datasets/fractional_RFI_September_2024.csv",
-    "October 2024": "assets/RFI_Datasets/fractional_RFI_October_2024.csv",
-    "November 2024": "assets/RFI_Datasets/fractional_RFI_November_2024.csv",
-    "December 2024": "assets/RFI_Datasets/fractional_RFI_December_2024.csv",
-    "January 2025": "assets/RFI_Datasets/fractional_RFI_January_2025.csv"
+    "December 2022": "fractional_RFI_December_2022.csv",
+    "August 2024": "fractional_RFI_August_2024.csv",
+    "September 2024": "fractional_RFI_September_2024.csv",
+    "October 2024": "fractional_RFI_October_2024.csv",
+    "November 2024": "fractional_RFI_November_2024.csv",
+    "December 2024": "fractional_RFI_December_2024.csv",
+    "January 2025": "fractional_RFI_January_2025.csv"
 }
 
 # Load datasets into a dictionary
@@ -45,6 +45,17 @@ yerr = [np.nanstd(d) for d in data_for_boxplot]
 
 # Compute ECDF data
 ecdf_data = {name: ECDF(data.flatten()) for name, data in loaded_datasets.items()}
+
+# now we will just read it with pickle as we have dumped it in the sy
+DSF = []
+for ii in range(len(AllFileNames)+1):
+    with open(f'U_hhh_FPX_{ii}.pkl', 'rb') as file:
+        datasetsF=  pd.read_pickle(file)
+        DSF.append(datasetsF)
+# Identify row and column where the probability is zero
+dataset_F, dataset1_F, dataset2_F, dataset3_F, dataset4_F, dataset5_F, dataset6_F, dataset7_F = DSF[0], DSF[1], DSF[2],DSF[3], DSF[4], DSF[5], DSF[6], DSF[7]
+print(dataset_F[0][0])
+
 # Combine frequency datasets into a dictionary
 frequency_datasets = {
     'DEC 2022': pd.DataFrame(dataset_F[0][0]).median(),
