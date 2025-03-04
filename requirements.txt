@@ -8,3 +8,4 @@ zarr
 xarray
 matplotlib
 tqdm
+scipy
