@@ -82,7 +82,7 @@ frequency_datasets = {
 # Create a 2D dataset of time and frequency for the heatmap
 time_frequency_datasets = {
     "AUG 2024": np.outer(datasets["August 2024"], pd.DataFrame(dataset1_F[0][0]).median().to_numpy()),
-    "SEPT 2024": np.outer(datasets["September 2024"], pd.DataFrame(dataset2_F[0][0]).median().to_numpy()),
+    "SEPT 2024": np.outer(datasets["September 2024"], pd.DataFrame(dataset2_F[0]).median().to_numpy()),
     "OCT 2024": np.outer(datasets["October 2024"], pd.DataFrame(dataset3_F[0][0]).median().to_numpy()),
     "NOV 2024": np.outer(datasets["November 2024"], pd.DataFrame(dataset4_F[0][0]).median().to_numpy()),
     "DEC 2024": np.outer(datasets["December 2024"], pd.DataFrame(dataset5_F[0][0]).median().to_numpy()),
