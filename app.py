@@ -73,7 +73,7 @@ print(dataset_F[0][0])
 frequency_datasets = {
     'DEC 2022': pd.DataFrame(dataset_F[0][0]).median(),
     'AUG 2024': pd.DataFrame(dataset1_F[0][0]).median(),
-    'SEPT 2024': pd.DataFrame(dataset2_F[0][0]).median(),
+    'SEPT 2024': pd.DataFrame(dataset2_F[0]).median(),
     'OCT 2024': pd.DataFrame(dataset3_F[0][0]).median(),
     'NOV 2024': pd.DataFrame(dataset4_F[0][0]).median(),
     'DEC 2024': pd.DataFrame(dataset5_F[0][0]).median(),
