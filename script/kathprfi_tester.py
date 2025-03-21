@@ -3,7 +3,7 @@ import argparse
 import ast
 import logging
 import os
-from matplotlib.pyplot import jet
+#from matplotlib.pyplot import jet
 import six
 import time as tme
 import time
@@ -37,8 +37,8 @@ def create_parser():
             'The arrays provides statistics about measured'
             'RFI from MeerKAT telescope.')
     #define the default values for the configuration
-    DEFAULT_OUTPUT_DIR  = "/home/kvanqa/ALL_WORK/kvanqa/RFI_work/"
-    DEFAULT_FILE_PATH = "/home/kvanqa/ALL_WORK/kvanqa/RFI_work"
+    DEFAULT_OUTPUT_DIR  = "/scratch/kvanqa/RFI_work/"
+    DEFAULT_FILE_PATH = "/scratch/kvanqa/RFI_work"
 
     parser.add_argument('-b', '--bad', action='store',  type=str,
                         help='Path to save list of bad files')
@@ -65,7 +65,7 @@ def main():
     scan = args.scan
     flag_type = args.flag_type
     filename_path = args.filename
-    data = pd.read_csv('sci_Imaging_U_2025-02-01T00:00:00Z_2025-02-28T00:00:00Z.csv')
+    data = pd.read_csv('sci_Imaging_U_2025-01-01T00:00:00Z_2025-01-31T00:00:00Z.csv')
     Filename = data['FullLink'].values
     # Read in csv file with files to processq
     badfiles = []
@@ -88,14 +88,16 @@ def main():
                 logging.info('Bad antennas has been removed.')
                 good_flags = kathp.selection(vis, pol=pol, corrprod=corrprod, scan=scan,
                                                 clean_ants=clean_ants, flag_type=flag_type )
+                
                 logging.info('Good flags has been returned')
-        
+                print(f"good_flags shape before slicing = {good_flags.shape}")
+
                 if good_flags.shape[0] * good_flags.shape[1] * good_flags.shape[2] != 0:
                 #if good_flags.size.compute() == 0:
                 #    continue
                 # Updating the array
                     ntime = good_flags.shape[0]
-                    time_step = 1
+                    time_step = 5
                     if ntime <= time_step:
                         time_step = ntime
                     nant = 64
@@ -108,13 +110,20 @@ def main():
                     master = np.zeros((24, 4096, 2016, 8, 24), dtype=np.uint16)
                     counter = np.zeros((24, 4096, 2016, 8, 24), dtype=np.uint16)
                     s = tme.time()
-                    
                     logging.info('Start to update the master and counter array')
-                    for tm in six.moves.range(0, ntime, time_step):
+                    sample_points = np.linspace(0, ntime - 1, num=10, dtype=int)
+                    print(f"Selected sample points: {sample_points}")
+
+                    for tm in sample_points:
                         time_slice = slice(tm, tm + time_step)
-                        #dask.config.set(num_workers=16)
-                        #with ProgressBar():
-                        flag_chunk = good_flags[time_slice].astype(int) #.compute()
+                        flag_chunk = good_flags[time_slice].astype(int)
+                        print(f"Processing sample {tm} with time slice {time_slice}")
+                    # for tm in range(0, ntime, time_step):
+                    #     time_slice = slice(tm, tm + time_step)
+                    #     print(f"Selected time slice: {time_slice}")
+                    #     flag_chunk = good_flags[time_slice].astype(int) #.compute()
+                        print(f"flag_chunk shape after slicing: {flag_chunk.shape}")
+
                         # average flags from 32k to 4k mode.
                         if good_flags.shape[1] == 32768 :
                             original_shape=flag_chunk.shape
@@ -122,33 +131,43 @@ def main():
                             downsample_factor = good_flags.shape[1] // 4096
                             vis_freqs_chunk = vis.freqs[::downsample_factor]
                         else:
+                            original_shape = flag_chunk.shape
                             vis_freqs_chunk = vis.freqs
                             logging.info(f"Reduced flag_chunk from {original_shape} to {flag_chunk.shape}")
-                        Time_idx = kathp.get_time_idx(vis)[time_slice]
+                        print("Full Time_idx array:", kathp.get_time_idx(vis))
+                        print(f"ALL unique time indices before slicing: {np.unique(kathp.get_time_idx(vis))}")
+                        #Time_idx = kathp.get_time_idx(vis)[time_slice]
+                        Time_idx = kathp.get_time_idx(vis)[ time_slice]
+                        print(f"Unique time indices for sample {tm}: {np.unique(Time_idx)}")
+                        print(f"Unique time indices: {np.unique(Time_idx)}")
+                        print(f"Unique Time_idx for sample {tm}: {np.unique(Time_idx)}")
                         El_idx = kathp.get_el_idx(el, elbins)[time_slice]
                         Az_idx = kathp.get_az_idx(az, azbins)[time_slice]
-                        #with ProgressBar():
 
                         master, counter = kathp.update_arrays(Time_idx, Bl_idx, El_idx, Az_idx,
                                                                 flag_chunk, master, counter)
+                        print(f"Updated master and counter for sample {tm}")
+
                         # if master.shape[1] != flag_chunk.shape[1]:
                         #     raise ValueError("Mismatch in frequency dimension between master and flag_chunk")
 
-                        logging.info('{} s has been taken to update file number {}'.format(i,
-                                                                                            tme.time()
-                                                                                            - s))
-                        goodfiles.append(Filename[i])
-                        logging.info('Creating Xarray Dataset')
-                        ds = xr.Dataset({'master': (('time', 'frequency', 'baseline', 'elevation',
-                                                        'azimuth'), master),
-                        'counter': (('time', 'frequency', 'baseline', 'elevation', 'azimuth'), counter)},
-                        {'time': np.arange(24), 'frequency': vis_freqs_chunk, 'baseline': np.arange(2016),
-                            'elevation': np.linspace(10, 80, 8), 'azimuth': np.arange(0, 360, 15)})
-                        logging.info('Saving dataset')
+                    logging.info('{} s has been taken to update file number {}'.format(i,
+                                                                                        tme.time()
+                                                                                        - s))
+                    goodfiles.append(Filename[i])
+                    logging.info('Creating Xarray Dataset')
+                    ds = xr.Dataset({'master': (('time', 'frequency', 'baseline', 'elevation',
+                                                    'azimuth'), master),
+                    'counter': (('time', 'frequency', 'baseline', 'elevation', 'azimuth'), counter)},
+                    {'time': np.arange(24), 'frequency': vis_freqs_chunk, 'baseline': np.arange(2016),
+                        'elevation': np.linspace(10, 80, 8), 'azimuth': np.arange(0, 360, 15)})
+                    logging.info('Saving dataset')
 
-                        flname = os.path.join(os.getcwd(), f"L_{pol}_{Filename[i][46:56]}.zarr")
-                        ds.to_zarr(flname, group='arr')
-                        logging.info('Dataset has been saved')
+                    flname = os.path.join(os.getcwd(), f"U_{pol}_{Filename[i][46:56]}.zarr")
+                    ds.to_zarr(flname, group='arr')
+                    logging.info('Dataset has been saved')
+                    print(f"Final master sum: {master.sum()}, Final counter sum: {counter.sum()}")
+
                 else:
                     logging.info('{} selection has a problem'.format(Filename[i]))
                     badfiles.append(Filename[i])
