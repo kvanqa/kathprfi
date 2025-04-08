@@ -49,6 +49,7 @@ def create_parser():
     parser.add_argument('--filename', action='store', type=str, default=DEFAULT_FILE_PATH,
                         help='Path to the CSV file')
     parser.add_argument('-p', '--pol', type=str, choices=['HH','HV','VH','VV'], help='polarization of interest')
+    parser.add_argument('--band', type=str, choices=['L', 'U'], default='U', help='Band of interest (L or U)')
     parser.add_argument('-s','--scan', type=str, default='track', help='observation scan')
     parser.add_argument('--corrprod', type=str, default='cross', help='add correlation product')
     parser.add_argument('--flag_type', type=str, choices=['cal_rfi', 'ingest_rfi','data_lost','cam'], default='cal_rfi', help='flag type of interest')
@@ -61,11 +62,12 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
     pol = args.pol
+    band = args.band
     corrprod = args.corrprod
     scan = args.scan
     flag_type = args.flag_type
     filename_path = args.filename
-    data = pd.read_csv('sci_Imaging_U_2025-01-01T00:00:00Z_2025-01-31T00:00:00Z.csv')
+    data = pd.read_csv('sci_Imaging_U_2025-03-01T00:00:00Z_2025-03-31T00:00:00Z.csv')
     Filename = data['FullLink'].values
     # Read in csv file with files to processq
     badfiles = []
@@ -74,6 +76,10 @@ def main():
     logging.info('MEERKAT HISTORICAL PROBABILITY OF RADIO FREQUENCY INTERFERENCE FRAMEWORK')
             
     for i in range(len(Filename)):
+        #Initializing 5-D arrays
+        master = np.zeros((24, 4096, 2016, 8, 24), dtype=np.uint16)
+        counter = np.zeros((24, 4096, 2016, 8, 24), dtype=np.uint16)
+        s = tme.time()
 
         logging.info('Adding file {} : {}'.format(i, Filename[i]))
         try:
@@ -106,15 +112,13 @@ def main():
                     azbins = np.arange(0, 360, 15)
                     el, az = kathp.get_az_and_el(vis)
 
-                    #Initializing 5-D arrays
-                    master = np.zeros((24, 4096, 2016, 8, 24), dtype=np.uint16)
-                    counter = np.zeros((24, 4096, 2016, 8, 24), dtype=np.uint16)
-                    s = tme.time()
+                    
                     logging.info('Start to update the master and counter array')
                     sample_points = np.linspace(0, ntime - 1, num=10, dtype=int)
                     print(f"Selected sample points: {sample_points}")
 
                     for tm in sample_points:
+                    #for tm in range(0, ntime, time_step):
                         time_slice = slice(tm, tm + time_step)
                         flag_chunk = good_flags[time_slice].astype(int)
                         print(f"Processing sample {tm} with time slice {time_slice}")
@@ -163,7 +167,7 @@ def main():
                         'elevation': np.linspace(10, 80, 8), 'azimuth': np.arange(0, 360, 15)})
                     logging.info('Saving dataset')
 
-                    flname = os.path.join(os.getcwd(), f"U_{pol}_{Filename[i][46:56]}.zarr")
+                    flname = os.path.join(os.getcwd(), f"{band}_{pol}_{Filename[i][46:56]}.zarr")
                     ds.to_zarr(flname, group='arr')
                     logging.info('Dataset has been saved')
                     print(f"Final master sum: {master.sum()}, Final counter sum: {counter.sum()}")
@@ -205,7 +209,7 @@ if __name__=="__main__":
 
 
 ''' when running the script you simply parse the arguments in the following manner
-ipython ipython github/kathprfi/script/kathprfi_tester.py -- -z . --filename sci_Imaging_U_2024-12-01T00:00:00Z_2024-12-31T00:00:00Z.csv -p 'HH' -s 'track' --corrprod 'cross' --flag_type 'ingest_rfi'
+ipython ipython github/kathprfi/script/kathprfi_tester.py -- -z . --filename sci_Imaging_U_2025-02-01T00:00:00Z_2024-02-28T00:00:00Z.csv -p 'HH' --band 'U' -s 'track' --corrprod 'cross' --flag_type 'ingest_rfi'
 '''
 
          
