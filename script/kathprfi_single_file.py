@@ -1,10 +1,14 @@
+from numba import set_num_threads
+set_num_threads(8)
 import datetime
-
+from datetime import timezone
 import katdal
+import dask
 import numpy as np
 import pandas as pd
 from numba import jit
 from numba import prange
+
 from skimage.measure import block_reduce
 import logging
 def initialize_logs():
@@ -15,6 +19,7 @@ def initialize_logs():
 
 def readfile(path):
     """
+<<<<<<< HEAD
     Read in the RDB file.
 
     Parameters
@@ -29,40 +34,6 @@ def readfile(path):
     """
     vis = katdal.open(path)
     return vis
-
-
-def config2dic(filepath):
-    """
-    Read a configuration file which will be passed into
-    a new object instance.
-
-    Parameters:
-    ----------
-    filepath : string
-        The absolute filepath of the config file.
-  
-    Returns:
-    --------
-    args_dict : dict
-        A dictionary of arguments, to be passed into some function,
-        usually the katdal object instance.
-   """
-
-    #open file and read contents
-    config_file = open(filepath)
-    txt = config_file.read()
-    args_dict = {}
-
-    #set up dictionary of arguments based on their types
-    for line in txt.split('\n'):
-        if len(line) > 0 and line.replace(' ','')[0] != '#':
-            #use '=' as delimiter and strip whitespace
-            split = line.split('=')
-            key = split[0].strip()
-            val = split[1].strip()
-            args_dict.update({key : val})
-    config_file.close()
-    return args_dict
 
 
 def remove_bad_ants(vis):
@@ -97,6 +68,17 @@ def remove_bad_ants(vis):
             pass
     return AntList
 
+def stored_flags(vis):
+    data = vis.source.data
+    info = data.chunk_info["flags"]
+    array_name = data.store.join(info["prefix"], "flags")
+    return data.store.get_dask_array(
+        array_name,
+        info["chunks"],
+        info["dtype"],
+        index=data.preselect_index,
+        errors=katdal.flags.CAL_RFI  # manual change this accordingly
+    )
 
 def selection(vis, pol, corrprod, scan, clean_ants, flag_type):
     """
@@ -129,17 +111,19 @@ def selection(vis, pol, corrprod, scan, clean_ants, flag_type):
     logging.info('checks cal report')
     good_tags = set(["target", "bpcal", "delaycal","fluxcal","gaincal","polcal"])
     good_targets = []
-    # target = vis.catalogue.targets[vis.target_indices[2]]
+    target = vis.catalogue.targets[vis.target_indices[1]]
     for tar in vis.target_indices:
         target = vis.catalogue.targets[tar]
-        if len(good_tags.intersection(target.tags))>1:
+        if len(good_tags.intersection(target.tags))>0:
                 good_targets.append(target)
     
-    vis.select(corrprods=corrprod, pol=pol, scans=scan, ants=clean_ants,
-               flags=flag_type, targets = good_targets)
+    vis.select(corrprods=corrprod, pol=pol, scans=scan, ants=clean_ants,flags=flag_type, targets = good_targets)
+    #dask.config.set(num_workers=16)
+    #flag = stored_flags(vis)
     flag = vis.flags
-    logging.info(f"missing targets {good_tags - set(good_targets)}")
-    return flag
+    #subset_flags = flag[:int(0.75*flag.shape[0]), :, :int(0.75*flag.shape[2])]
+    logging.info(f"observation has tags {set(good_targets)}")
+    return flag #.compute()
 
 def NewFlagChunk(flag_chunk):
     """
@@ -181,8 +165,8 @@ def get_az_and_el(vis):
     elmean = np.mean(vis.el, axis=1)
     return elmean, azmean
 
-
 def get_time_idx(vis):
+
     """
     Convert unix time to hour of a day.
 
@@ -197,20 +181,16 @@ def get_time_idx(vis):
        numpy array with time dumps converted to hour of a day
     """
     unix = vis.timestamps
-    local_time = []
-    for i in range(len(unix)):
-        local_time.append(datetime.datetime.fromtimestamp((unix[i])).strftime('%H:%M:%S'))
-    # Converting time to hour of a day
     hour = []
-    for i in range(len(local_time)):
-        h = int(round(int(local_time[i][:2]) + int(local_time[i][3:5])/60 + float(
-            local_time[i][-2:])/3600))
-        if h == 24:
+    for i in range(len(unix)):
+        # Convert Unix timestamp to UTC hour
+        utc_time = datetime.datetime.utcfromtimestamp(unix[i]).strftime('%H')
+        if utc_time == '24':
             hour.append(0)
         else:
-            hour.append(h)
-    return np.array(hour, dtype=np.int32)
+            hour.append(int(utc_time))
 
+    return np.array(hour, dtype=int)
 
 def get_az_idx(azimuth, azbins):
     """
