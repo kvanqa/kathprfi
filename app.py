@@ -72,7 +72,7 @@ data_for_boxplot = datasets_mean.values()
 # Remove NaNs from data_for_boxplot
 clean_data = [pd.Series(month_data).dropna().values for month_data in data_for_boxplot]
 #data_for_boxplot = [data.flatten() for data in loaded_datasets.values()]
-average = [clean_data]
+average_occupancy = [np.nanmean(m_data) for m_data in clean_data]
 yerr = [np.nanstd(d) for d in loaded_datasets.values()]
 
 # Compute ECDF data
