@@ -18,8 +18,8 @@ class SARAOArchiveQuery:
         parser = argparse.ArgumentParser(description='SARAO Archive Query')
         parser.add_argument('-s', '--start_time', type=str, required=True, help='Start time (format: YYYY-MM-DDTHH:MM:SSZ)')
         parser.add_argument('-e', '--end_time', type=str, required=True, help='End time (format: YYYY-MM-DDTHH:MM:SSZ)')
-        parser.add_argument('--band', type=str, choices=['L', 'U'], default='L', help='Band of interest (L or U)')
-        parser.add_argument('-t', '--dump_rate', type=float, default=8, help='Dump rate')
+        parser.add_argument('--band', type=str, choices=['L', 'U'], default='U', help='Band of interest (L or U)')
+        parser.add_argument('-t', '--dump_rate', type=float, default=7.9966, help='Dump rate')
         parser.add_argument('-f', '--channel_mode', type=int, default=4096, help='Number of frequency channels')
         return parser
     
@@ -37,7 +37,7 @@ class SARAOArchiveQuery:
 
         #Define band-specific parametrs based on the parsed arguments
         if self.band == "U":
-            target_center_freq = 816e6
+            target_center_freq = 816132812
             target_bandwidth = 544e6
         elif self.band == "L":
             target_center_freq = 1284e6
@@ -71,5 +71,10 @@ if __name__ == "__main__":
     search_results = archive_query.search_archive()
     imaging_links, imaging_info = archive_query.process_results(search_results)
     archive_query.save_to_csv(imaging_links, imaging_info)
+
+'''
+When executing the script, you can do;
+ipython Archive_query.py -- --start_time '2023-12-01T00:00:00Z' --end_time '2023-12-31T00:00:00Z' --band "L" -t 8 -f 4096
+'''
 
 
