@@ -185,7 +185,7 @@ def update_plots(clickData):
     # Bar plot
     bar_fig = go.Figure()
     bar_fig.add_trace(go.Bar(
-        x=month_labels, y=clean_data, name='Average RFI Level',
+        x=month_labels, y=average_occupancy, name='Average RFI Level',
         error_y=dict(type='data', array=yerr, visible=True),
         marker_color=['blue' if month == selected_month else 'gray' for month in month_labels]
     ))
