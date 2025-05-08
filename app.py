@@ -15,7 +15,7 @@ import plotly.graph_objects as go
 band = "UHF"  # Example band
 time_range = np.arange(24)
 frequency2 = np.load('frequencies.npy')
-month_labels = ['DEC 2022', 'AUG 2024', 'SEPT 2024', 'OCT 2024', 'NOV 2024', 'DEC 2024', 'JAN 2025']
+month_labels = ['DEC 2022', 'AUG 2024', 'SEPT 2024', 'OCT 2024', 'NOV 2024', 'DEC 2024', 'JAN 2025', 'FEB 2025', 'MAR 2025', 'APR 2025']
 
 # Load the summary table
 summary_df = pd.read_csv("RFI_summary_statistics.csv")
@@ -28,7 +28,10 @@ file_paths = {
     "October 2024": "assets/RFI_Datasets/fractional_RFI_October_2024.csv",
     "November 2024": "assets/RFI_Datasets/fractional_RFI_November_2024.csv",
     "December 2024": "assets/RFI_Datasets/fractional_RFI_December_2024.csv",
-    "January 2025": "assets/RFI_Datasets/fractional_RFI_January_2025.csv"
+    "January 2025": "assets/RFI_Datasets/fractional_RFI_January_2025.csv",
+    "February 2025": "assets/uhf_data/RFI_Datasets/fractional_RFI_February_2025.csv",
+    "March 2025": "assets/uhf_data/RFI_Datasets/fractional_RFI_March_2025.csv",
+    "April 2025": "assets/uhf_data/RFI_Datasets/fractional_RFI_April_2025.csv"
 }
 # Define file paths for frequencies
 file_paths_freqs = {
@@ -36,7 +39,11 @@ file_paths_freqs = {
     "September 2024": "assets/RFI_FREQ_datasets/fractional_RFI_September_2024.csv",
     "October 2024": "assets/RFI_FREQ_datasets/fractional_RFI_October_2024.csv",
     "November 2024": "assets/RFI_FREQ_datasets/fractional_RFI_November_2024.csv",
-    "December 2024": "assets/RFI_FREQ_datasets/fractional_RFI_December_2024.csv"
+    "December 2024": "assets/RFI_FREQ_datasets/fractional_RFI_December_2024.csv",
+    "January 2025": "assets/RFI_FREQ_datasets/fractional_RFI_January_2025.csv",
+    "February 2025": "assets/RFI_FREQ_datasets/fractional_RFI_February_2025.csv",
+    "March 2025": "assets/RFI_FREQ_datasets/fractional_RFI_March_2025.csv",
+    "April 2025": "assets/RFI_FREQ_datasets/fractional_RFI_April_2025.csv"
 }
 datasets_freqs = {
     name: pd.read_csv(path).iloc[:, 1:].values  # Exclude the first column using iloc
