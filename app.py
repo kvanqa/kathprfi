@@ -22,28 +22,28 @@ summary_df = pd.read_csv("RFI_summary_statistics.csv")
 
 # Define file paths
 file_paths = {
-    "December 2022": "assets/RFI_Datasets/fractional_RFI_December_2022.csv",
-    "August 2024": "assets/RFI_Datasets/fractional_RFI_August_2024.csv",
-    "September 2024": "assets/RFI_Datasets/fractional_RFI_September_2024.csv",
-    "October 2024": "assets/RFI_Datasets/fractional_RFI_October_2024.csv",
-    "November 2024": "assets/RFI_Datasets/fractional_RFI_November_2024.csv",
-    "December 2024": "assets/RFI_Datasets/fractional_RFI_December_2024.csv",
-    "January 2025": "assets/RFI_Datasets/fractional_RFI_January_2025.csv",
+    "December 2022": "assets/uhf_data/RFI_Datasets/fractional_RFI_December_2022.csv",
+    "August 2024": "assets/uhf_data/RFI_Datasets/fractional_RFI_August_2024.csv",
+    "September 2024": "assets/uhf_data/RFI_Datasets/fractional_RFI_September_2024.csv",
+    "October 2024": "assets/uhf_data/RFI_Datasets/fractional_RFI_October_2024.csv",
+    "November 2024": "assets/uhf_data/RFI_Datasets/fractional_RFI_November_2024.csv",
+    "December 2024": "assets/uhf_data/RFI_Datasets/fractional_RFI_December_2024.csv",
+    "January 2025": "assets/uhf_data/RFI_Datasets/fractional_RFI_January_2025.csv",
     "February 2025": "assets/uhf_data/RFI_Datasets/fractional_RFI_February_2025.csv",
     "March 2025": "assets/uhf_data/RFI_Datasets/fractional_RFI_March_2025.csv",
     "April 2025": "assets/uhf_data/RFI_Datasets/fractional_RFI_April_2025.csv"
 }
 # Define file paths for frequencies
 file_paths_freqs = {
-    "August 2024": "assets/RFI_FREQ_datasets/fractional_RFI_August_2024.csv",
-    "September 2024": "assets/RFI_FREQ_datasets/fractional_RFI_September_2024.csv",
-    "October 2024": "assets/RFI_FREQ_datasets/fractional_RFI_October_2024.csv",
-    "November 2024": "assets/RFI_FREQ_datasets/fractional_RFI_November_2024.csv",
-    "December 2024": "assets/RFI_FREQ_datasets/fractional_RFI_December_2024.csv",
-    "January 2025": "assets/RFI_FREQ_datasets/fractional_RFI_January_2025.csv",
-    "February 2025": "assets/RFI_FREQ_datasets/fractional_RFI_February_2025.csv",
-    "March 2025": "assets/RFI_FREQ_datasets/fractional_RFI_March_2025.csv",
-    "April 2025": "assets/RFI_FREQ_datasets/fractional_RFI_April_2025.csv"
+    "August 2024": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_August_2024.csv",
+    "September 2024": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_September_2024.csv",
+    "October 2024": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_October_2024.csv",
+    "November 2024": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_November_2024.csv",
+    "December 2024": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_December_2024.csv",
+    "January 2025": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_January_2025.csv",
+    "February 2025": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_February_2025.csv",
+    "March 2025": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_March_2025.csv",
+    "April 2025": "assets/uhf_data/RFI_FREQ_datasets/fractional_RFI_April_2025.csv"
 }
 datasets_freqs = {
     name: pd.read_csv(path).iloc[:, 1:].values  # Exclude the first column using iloc
@@ -120,22 +120,22 @@ app.layout = html.Div([
 
     html.H3("Monthly Reports"),
     html.Ul([
-        html.Li(html.A("August 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-August-2024.pdf", target="_blank")),
-        html.Li(html.A("September 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-September-2024.pdf", target="_blank")),
-        html.Li(html.A("October 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-October-2024.pdf", target="_blank")),
-        html.Li(html.A("November 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-November-2024.pdf", target="_blank")),
-        html.Li(html.A("December 2024 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-December-2024.pdf", target="_blank")),
-        html.Li(html.A("January 2025 Report", href="/assets/RFI_Reports_21024_2025/RFI-Report-January-2025.pdf", target="_blank")),
+        html.Li(html.A("August 2024 Report", href="/assets/uhf_data/RFI_Reports_21024_2025/RFI-Report-August-2024.pdf", target="_blank")),
+        html.Li(html.A("September 2024 Report", href="/assets/uhf_data/RFI_Reports_21024_2025/RFI-Report-September-2024.pdf", target="_blank")),
+        html.Li(html.A("October 2024 Report", href="/assets/uhf_data/RFI_Reports_21024_2025/RFI-Report-October-2024.pdf", target="_blank")),
+        html.Li(html.A("November 2024 Report", href="/assets/uhf_data/RFI_Reports_21024_2025/RFI-Report-November-2024.pdf", target="_blank")),
+        html.Li(html.A("December 2024 Report", href="/assets/uhf_data/RFI_Reports_21024_2025/RFI-Report-December-2024.pdf", target="_blank")),
+        html.Li(html.A("January 2025 Report", href="/assets/uhf_data/RFI_Reports_21024_2025/RFI-Report-January-2025.pdf", target="_blank")),
         # Add links for all other months
     ]),
     html.H3("Monthly Fractional RFI Flagging Datasets"),
     html.Ul([
-        html.Li(html.A("August 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_August_2024.csv", target="_blank")),
-        html.Li(html.A("September 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_September_2024.csv", target="_blank")),
-        html.Li(html.A("October 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_October_2024.csv", target="_blank")),
-        html.Li(html.A("November 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_November_2024.csv", target="_blank")),
-        html.Li(html.A("December 2024 Dataset", href="/assets/RFI_Datasets/fractional_RFI_December_2024.csv", target="_blank")),
-        html.Li(html.A("January 2025 Dataset", href="/assets/RFI_Datasets/fractional_RFI_January_2025.csv", target="_blank")),
+        html.Li(html.A("August 2024 Dataset", href="/assets/uhf_data/RFI_Datasets/fractional_RFI_August_2024.csv", target="_blank")),
+        html.Li(html.A("September 2024 Dataset", href="/assets/uhf_data/RFI_Datasets/fractional_RFI_September_2024.csv", target="_blank")),
+        html.Li(html.A("October 2024 Dataset", href="/assets/uhf_data/RFI_Datasets/fractional_RFI_October_2024.csv", target="_blank")),
+        html.Li(html.A("November 2024 Dataset", href="/assets/uhf_data/RFI_Datasets/fractional_RFI_November_2024.csv", target="_blank")),
+        html.Li(html.A("December 2024 Dataset", href="/assets/uhf_data/RFI_Datasets/fractional_RFI_December_2024.csv", target="_blank")),
+        html.Li(html.A("January 2025 Dataset", href="/assets/uhf_data/RFI_Datasets/fractional_RFI_January_2025.csv", target="_blank")),
     ]),
     html.H3("Key RFI Statistics"),
     dash_table.DataTable(
