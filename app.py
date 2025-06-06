@@ -94,6 +94,10 @@ time_frequency_datasets = {
     "OCT 2024": np.outer(datasets["October 2024"], frequency_datasets['October 2024']),
     "NOV 2024": np.outer(datasets["November 2024"], frequency_datasets['November 2024']),
     "DEC 2024": np.outer(datasets["December 2024"], frequency_datasets['December 2024']),
+    "JAN 2025": np.outer(datasets["January 2025"], frequency_datasets['January 2025']),
+    "FEB 2025": np.outer(datasets["February 2025"], frequency_datasets['February 2025']),
+    "MAR 2025": np.outer(datasets["March 2025"], frequency_datasets['March 2025']),
+    "APRIL 2025": np.outer(datasets["April 2025"], frequency_datasets['April 2025']),
 }
 
 # Initialize Dash app
