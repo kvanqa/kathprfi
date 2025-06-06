@@ -310,8 +310,8 @@ def update_plots(clickData):
 # Run the app
 import webbrowser
 if __name__ == '__main__':
-    webbrowser.open("http://0.0.0.0:8080")
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    webbrowser.open("http://0.0.0.0:8050")
+    app.run(host='0.0.0.0', port=8050, debug=True)
 
 
 # if __name__ == '__main__': 
