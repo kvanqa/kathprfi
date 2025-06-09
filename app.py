@@ -230,28 +230,46 @@ def update_plots(clickData):
             line=dict(width=10 if month == selected_month else 3),
             opacity=1 if month == selected_month else 0.5
         ))
-
-    # Add shaded bands and labels on the same axis as the frequency data
     for xmin, xmax, label in shaded_regions:
-    # Shaded region
-        freq_fig.add_shape(
-        type="rect",
-        x0=xmin, x1=xmax, y0=0, y1=1,  # Extend to data range
-        fillcolor="gray",
-        opacity=0.3,
-        layer="below",
-        line_width=0
-    )
+        if label == 'Aircraft transponders':
+            # Add a rectangle shape for the horizontal strip
+            freq_fig.add_shape(type="rect",
+                            x0=0.75, x1=1, y0=0.15, y1=0.25,
+                            fillcolor="gray", opacity=0.4, line_width=0)
+            # Add annotation for the text
+            freq_fig.add_annotation(x=1067.5, y=0.2, text=label,
+                                showarrow=False, font=dict(size=12, color="black"))
+        else:
+            # Add rectangle for vertical shaded bands
+            freq_fig.add_shape(type="rect",
+                            x0=xmin, x1=xmax, y0=0, y1=1,
+                            fillcolor="gray", opacity=0.2, line_width=0)
+            # Add annotation for the text
+            freq_fig.add_annotation(x=(xmin+xmax)/2, y=0.6, text=label,
+                                showarrow=False, font=dict(size=12),
+                               textangle=-90)
+            
+    # # Add shaded bands and labels on the same axis as the frequency data
+    # for xmin, xmax, label in shaded_regions:
+    # # Shaded region
+    #     freq_fig.add_shape(
+    #     type="rect",
+    #     x0=xmin, x1=xmax, y0=0, y1=1,  # Extend to data range
+    #     fillcolor="gray",
+    #     opacity=0.3,
+    #     layer="below",
+    #     line_width=0
+    # )
 
-    # Add label in the same x-axis
-    freq_fig.add_annotation(
-        x=(xmin + xmax) / 2, y=1 * 0.9,  # Positioning label slightly below max Y
-        text=label,
-        showarrow=False,
-        font=dict(size=10),
-        textangle=90,
-        xanchor='center', yanchor='top'
-    )
+    # # Add label in the same x-axis
+    # freq_fig.add_annotation(
+    #     x=(xmin + xmax) / 2, y=1 * 0.9,  # Positioning label slightly below max Y
+    #     text=label,
+    #     showarrow=False,
+    #     font=dict(size=10),
+    #     textangle=90,
+    #     xanchor='center', yanchor='top'
+    # )
     freq_fig.update_layout(
         title=f'RFI as a function of frequency for {band}-band HH',
         xaxis_title='Frequency [MHz]',
@@ -315,6 +333,8 @@ def update_plots(clickData):
 import webbrowser
 if __name__ == '__main__':
     webbrowser.open("http://0.0.0.0:8050")
+    #webbrowser.open("http://bruce.science.kat.ac.za:8050/")
+    #app.run(host='bruce.science.kat.ac.za', port=8050, debug=True)
     app.run(host='0.0.0.0', port=8050, debug=True)
 
 
