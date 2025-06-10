@@ -56,14 +56,28 @@ frequency_datasets = {name: np.median(data,axis=0) for name, data in datasets_fr
 # Shaded frequency bands (example values, adjust to match your figure)
 shaded_regions = [
     (560, 580, 'DTV1'),
-    (700, 720, 'DTV2'),
-    (750, 780, 'Vodacom downlink'),
-    (800, 830, 'MTN downlink'),
-    (850, 875, 'Telkom downlink'),
+    (740, 760, 'DTV2'),
+    (768, 778, 'Vodacom downlink'),
+    (801, 811, 'MTN downlink'),
+    (811, 821, 'Telkom downlink'),
     (880, 915, 'GSM UP'),
     (925, 960, 'GSM DOWN'),
     (967, 1164, 'Aircraft transponders')
 ]
+
+## create masks
+dtv1 = np.where((frequency2 >= 560) & (frequency2 <= 580))[0]
+dtv2 = np.where((frequency2 >= 740) & (frequency2 <= 760))[0]
+vodacom = np.where((frequency2 >= 768) & (frequency2 <= 778))[0]
+mtn = np.where((frequency2 >= 801) & (frequency2 <= 811))[0]
+telkom = np.where((frequency2 >= 811) & (frequency2 <= 821))[0]
+gsm_up = np.where((frequency2 >= 880) & (frequency2 <= 915))[0]
+gsm_down = np.where((frequency2 >= 925) & (frequency2 <= 960))[0]
+air_nav = np.where((frequency2 > 967) & (frequency2 < 1164))[0]
+known_freqs = np.unique(np.concatenate((dtv1,dtv2,vodacom,mtn,telkom,gsm_up,gsm_down,air_nav)))
+
+# create masked versions of the data for RFI and clean regions
+mask = np.isin(np.arange(len(frequency2)),known_freqs)
 
 # Load datasets into a dictionary
 loaded_datasets = {
@@ -224,17 +238,39 @@ def update_plots(clickData):
 
     # Frequency plot
     freq_fig = go.Figure()
+    # Add traces for each month - full spectrum
     for month, data in frequency_datasets.items():
+        # Full spectrum (original data)
         freq_fig.add_trace(go.Scatter(
             x=frequency2, y=data, mode='lines', name=month,
-            line=dict(width=10 if month == selected_month else 3),
-            opacity=1 if month == selected_month else 0.5
+            line=dict(width=10 if month == 'current_month' else 3),
+            opacity=1 if month == 'current_month' else 0.5,
+            visible=True  # Visible by default
         ))
+        
+        # RFI regions only (masked with NaN elsewhere)
+        rfi_data = np.where(mask, data, np.nan)
+        freq_fig.add_trace(go.Scatter(
+            x=frequency2, y=rfi_data, mode='lines', name=f'{month} (RFI)',
+            line=dict(width=10 if month == 'current_month' else 3, color='red'),
+            opacity=1 if month == 'current_month' else 0.5,
+            visible=False  # Hidden by default
+        ))
+        
+        # Clean regions only (masked with NaN for RFI)
+        rfi_free_data = np.where(~mask, data, np.nan)
+        freq_fig.add_trace(go.Scatter(
+            x=frequency2, y=rfi_free_data, mode='lines', name=f'{month} (Clean)',
+            line=dict(width=10 if month == 'current_month' else 3, color='green'),
+            opacity=1 if month == 'current_month' else 0.5,
+            visible=False  # Hidden by default
+        ))
+
     for xmin, xmax, label in shaded_regions:
         if label == 'Aircraft transponders':
             # Add a rectangle shape for the horizontal strip
             freq_fig.add_shape(type="rect",
-                            x0=0.75, x1=1, y0=0.15, y1=0.25,
+                            x0=xmin, x1=xmax, y0=0.15, y1=0.25,
                             fillcolor="gray", opacity=0.4, line_width=0)
             # Add annotation for the text
             freq_fig.add_annotation(x=1067.5, y=0.2, text=label,
@@ -248,28 +284,50 @@ def update_plots(clickData):
             freq_fig.add_annotation(x=(xmin+xmax)/2, y=0.6, text=label,
                                 showarrow=False, font=dict(size=12),
                                textangle=-90)
-            
-    # # Add shaded bands and labels on the same axis as the frequency data
-    # for xmin, xmax, label in shaded_regions:
-    # # Shaded region
-    #     freq_fig.add_shape(
-    #     type="rect",
-    #     x0=xmin, x1=xmax, y0=0, y1=1,  # Extend to data range
-    #     fillcolor="gray",
-    #     opacity=0.3,
-    #     layer="below",
-    #     line_width=0
-    # )
 
-    # # Add label in the same x-axis
-    # freq_fig.add_annotation(
-    #     x=(xmin + xmax) / 2, y=1 * 0.9,  # Positioning label slightly below max Y
-    #     text=label,
-    #     showarrow=False,
-    #     font=dict(size=10),
-    #     textangle=90,
-    #     xanchor='center', yanchor='top'
-    # )
+    # Create dropdown menu
+    freq_fig.update_layout(
+        updatemenus=[
+            {
+                "buttons": [
+                    {
+                        "label": "Full Spectrum",
+                        "method": "update",
+                        "args": [
+                            {"visible": [True, False, False] * len(frequency_datasets)},  # Show only full spectrum traces
+                            {"title": "Full Spectrum"}
+                        ],
+                    },
+                    {
+                        "label": "RFI Regions Only",
+                        "method": "update",
+                        "args": [
+                            {"visible": [False, True, False] * len(frequency_datasets)},  # Show only RFI traces
+                            {"title": "RFI Regions Only"}
+                        ],
+                    },
+                    {
+                        "label": "Clean Regions Only",
+                        "method": "update",
+                        "args": [
+                            {"visible": [False, False, True] * len(frequency_datasets)},  # Show only clean traces
+                            {"title": "Clean Regions Only"}
+                        ],
+                    },
+                ],
+                "direction": "down",
+                "showactive": True,
+                "x": 0.1,
+                "xanchor": "left",
+                "y": 1.15,
+                "yanchor": "top",
+            }
+        ],
+        title="Spectrum Analysis",
+        xaxis_title="Frequency",
+        yaxis_title="Amplitude"
+    )            
+
     freq_fig.update_layout(
         title=f'RFI as a function of frequency for {band}-band HH',
         xaxis_title='Frequency [MHz]',
@@ -332,10 +390,10 @@ def update_plots(clickData):
 # Run the app
 import webbrowser
 if __name__ == '__main__':
-    webbrowser.open("http://0.0.0.0:8050")
-    #webbrowser.open("http://bruce.science.kat.ac.za:8050/")
-    #app.run(host='bruce.science.kat.ac.za', port=8050, debug=True)
-    app.run(host='0.0.0.0', port=8050, debug=True)
+    #webbrowser.open("http://0.0.0.0:8050")
+    webbrowser.open("http://bruce.science.kat.ac.za:8050/")
+    app.run(host='bruce.science.kat.ac.za', port=8050, debug=True)
+    #app.run(host='0.0.0.0', port=8050, debug=True)
 
 
 # if __name__ == '__main__': 
